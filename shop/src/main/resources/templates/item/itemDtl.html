@@ -27,6 +27,7 @@
             $("#totalPrice").html(totalPrice + '원');
         }
 
+         /* 주문은 ajax 통신 방법 보기. */
         function order(){
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");

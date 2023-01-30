@@ -9,7 +9,7 @@
 
         $(document).ready(function(){
             $("#searchBtn").on("click",function(e) {
-                e.preventDefault();
+                e.preventDefault(); // 폼태그의 전송을 막아줌. 
                 page(0);
             });
         });
@@ -53,6 +53,11 @@
             </tr>
             </thead>
             <tbody>
+        <!-- ItemController 파일에서 가지고 옴. 
+        itemManage 메서드 부분     
+        model.addAttribute("items", items);
+        model.addAttribute("itemSearchDto", itemSearchDto);
+        model.addAttribute("maxPage", 5); -->
             <tr th:each="item, status: ${items.getContent()}">
                 <td th:text="${item.id}"></td>
                 <td>

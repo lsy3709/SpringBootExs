@@ -20,10 +20,13 @@
         function bindDomEvent(){
             $(".custom-file-input").on("change", function() {
                 var fileName = $(this).val().split("\\").pop();  //이미지 파일명
+                console.log(fileName);
                 var fileExt = fileName.substring(fileName.lastIndexOf(".")+1); // 확장자 추출
+                console.log(fileExt);
                 fileExt = fileExt.toLowerCase(); //소문자 변환
+                console.log(fileExt);
 
-                if(fileExt != "jpg" && fileExt != "jpeg" && fileExt != "gif" && fileExt != "png" && fileExt != "bmp"){
+                if(fileExt != "jpg" && fileExt != "jpeg" && fileExt != "gif" && fileExt != "png" && fileExt != "bmp" && fileExt != "jfif"){
                     alert("이미지 파일만 등록이 가능합니다.");
                     return;
                 }
@@ -59,7 +62,7 @@
             상품 등록
         </p>
 
-        <input type="hidden" th:field="*{id}">
+        <input type="text" th:field="*{id}">
 
         <div class="form-group">
             <select th:field="*{itemSellStatus}" class="custom-select">
@@ -108,13 +111,14 @@
                 </div>
             </div>
         </div>
-
+<!-- 파일 이미지를 1개를 예를 등록 했다 가정. ex)bread1.jpg 의 타입이: itemImgDto, -->
         <div th:if = "${not #lists.isEmpty(itemFormDto.itemImgDtoList)}">
             <div class="form-group" th:each="itemImgDto, status: ${itemFormDto.itemImgDtoList}">
                 <div class="custom-file img-div">
                     <input type="file" class="custom-file-input" name="itemImgFile">
                     <input type="hidden" name="itemImgIds" th:value="${itemImgDto.id}">
                     <label class="custom-file-label" th:text="${not #strings.isEmpty(itemImgDto.oriImgName)} ? ${itemImgDto.oriImgName} : '상품이미지' + ${status.index+1}"></label>
+                    <!-- <label class="custom-file-label" th:text="${not #strings.isEmpty(itemImgDto.oriImgName)} ? ${itemImgDto.id} : '상품이미지' + ${status.index+1}"></label> -->
                 </div>
             </div>
         </div>

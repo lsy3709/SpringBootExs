@@ -17,6 +17,7 @@ public class MainItemDto {
 
     private Integer price;
 
+    // Querydsl 결과 조회 시 MainItemDto 타입 객체로 바로 받아오기. 바인딩.
     @QueryProjection
     public MainItemDto(Long id, String itemNm, String itemDetail, String imgUrl,Integer price){
         this.id = id;

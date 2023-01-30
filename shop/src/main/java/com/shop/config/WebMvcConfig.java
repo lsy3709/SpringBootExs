@@ -8,6 +8,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
+	//application.properties 라는 파일안에 있는 값을 가져왔음. 
+	// uploadPath=file:///C:/shop/
     @Value("${uploadPath}")
     String uploadPath;
 

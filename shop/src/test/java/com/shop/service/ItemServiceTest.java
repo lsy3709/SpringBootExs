@@ -22,7 +22,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-@Transactional
+//@Transactional
 @TestPropertySource(locations="classpath:application-test.properties")
 class ItemServiceTest {
 
@@ -54,6 +54,7 @@ class ItemServiceTest {
     @DisplayName("상품 등록 테스트")
     @WithMockUser(username = "admin", roles = "ADMIN")
     void saveItem() throws Exception {
+    	// 일반 데이터
         ItemFormDto itemFormDto = new ItemFormDto();
         itemFormDto.setItemNm("테스트상품");
         itemFormDto.setItemSellStatus(ItemSellStatus.SELL);
@@ -61,7 +62,13 @@ class ItemServiceTest {
         itemFormDto.setPrice(1000);
         itemFormDto.setStockNumber(100);
 
+        // 파일 데이터 
         List<MultipartFile> multipartFileList = createMultipartFiles();
+        // itemService.saveItem 호출시 -> 상품 데이터는 바로 데이터베이스 반영이 되고,
+        // 이미지는 한번 더 호출를 해서 -> 파일을 저장. 
+        // itemImgService.saveItemImg(itemImg, itemImgFileList.get(i));
+        // 정상적으로 일반 데이터, 파일 데이터가 저장이 다 되면.
+        // 상품 번호 가 리턴됨. 
         Long itemId = itemService.saveItem(itemFormDto, multipartFileList);
         List<ItemImg> itemImgList = itemImgRepository.findByItemIdOrderByIdAsc(itemId);
 

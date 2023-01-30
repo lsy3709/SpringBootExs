@@ -55,17 +55,21 @@ public class ItemService {
         return item.getId();
     }
 
+    // 메인에서 해당 상품 클릭 시, 상세화면 처리 부분.
     @Transactional(readOnly = true)
     public ItemFormDto getItemDtl(Long itemId){
+    	// 상품 아이디에 해당 하는 이미지 불러오기.
         List<ItemImg> itemImgList = itemImgRepository.findByItemIdOrderByIdAsc(itemId);
+        // 엔티티 클래스 타입, dto 클래스 타입으로 변환 작업. 
         List<ItemImgDto> itemImgDtoList = new ArrayList<>();
         for (ItemImg itemImg : itemImgList) {
             ItemImgDto itemImgDto = ItemImgDto.of(itemImg);
             itemImgDtoList.add(itemImgDto);
         }
-
+        // 상품 번호로 , 아이템 엔티티 객체를 리턴. 
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(EntityNotFoundException::new);
+        // 아이템 엔티티 객체를 itemFormDto 타입으로 변경. 
         ItemFormDto itemFormDto = ItemFormDto.of(item);
         itemFormDto.setItemImgDtoList(itemImgDtoList);
         return itemFormDto;
@@ -92,6 +96,8 @@ public class ItemService {
         return itemRepository.getAdminItemPage(itemSearchDto, pageable);
     }
 
+    // 단순 조회는 하면 되는데, 트랜잭션 부분을 더티체킹을 한다면, 
+    // 매번 메인을 불러올 때 마다, 성능 저하 우려가 있어서 , 읽기만 하기. 
     @Transactional(readOnly = true)
     public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
         return itemRepository.getMainItemPage(itemSearchDto, pageable);

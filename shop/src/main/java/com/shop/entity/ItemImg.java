@@ -47,6 +47,7 @@ public class ItemImg extends BaseEntity{
     @JoinColumn(name = "item_id") // 외래키 설정 부분. 
     private Item item;
 
+    // 엔티티 클래스 부분.
     public void updateItemImg(String oriImgName, String imgName, String imgUrl){
         this.oriImgName = oriImgName;
         this.imgName = imgName;

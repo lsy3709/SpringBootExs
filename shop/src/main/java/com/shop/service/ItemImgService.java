@@ -14,7 +14,8 @@ import javax.persistence.EntityNotFoundException;
 @RequiredArgsConstructor
 @Transactional
 public class ItemImgService {
-
+	//application.properties 라는 파일안에 있는 값을 가져왔음. 
+	//itemImgLocation=C:/shop/item
     @Value("${itemImgLocation}")
     private String itemImgLocation;
 
@@ -24,21 +25,32 @@ public class ItemImgService {
 
     public void saveItemImg(ItemImg itemImg, MultipartFile itemImgFile) throws Exception{
         String oriImgName = itemImgFile.getOriginalFilename();
+        System.out.println("ItemImgService: oriImgName : "+ oriImgName);
         String imgName = "";
         String imgUrl = "";
 
         //파일 업로드
+        // 파일이 있다면.
         if(!StringUtils.isEmpty(oriImgName)){
             imgName = fileService.uploadFile(itemImgLocation, oriImgName,
                     itemImgFile.getBytes());
+            System.out.println("ItemImgService: imgName : "+ imgName);
+            //WebMvcConfig 파일에 설정 부분에 
+            // uploadPath=file:///C:/shop/
+            // registry.addResourceHandler("/images/**")
+            // .addResourceLocations(uploadPath);
             imgUrl = "/images/item/" + imgName;
+            System.out.println("ItemImgService: imgUrl : "+ imgUrl);
         }
 
         //상품 이미지 정보 저장
+        // 엔티티 클래스 객체에 멤버로 값을 재할당.
         itemImg.updateItemImg(oriImgName, imgName, imgUrl);
+        // itemImg 이미지를 데이터베이스에 반영. 
         itemImgRepository.save(itemImg);
     }
 
+    // 업데이트 로직 부분, 만약에 수정 부분인데, 기존의 파일 이미지를 삭제 후 , 새로 작성하는 부분.
     public void updateItemImg(Long itemImgId, MultipartFile itemImgFile) throws Exception{
         if(!itemImgFile.isEmpty()){
             ItemImg savedItemImg = itemImgRepository.findById(itemImgId)
@@ -50,6 +62,7 @@ public class ItemImgService {
                         savedItemImg.getImgName());
             }
 
+            // 수정 시, 새로 입력된 파일의 이미지를 다시 수정하는 역할. 
             String oriImgName = itemImgFile.getOriginalFilename();
             String imgName = fileService.uploadFile(itemImgLocation, oriImgName, itemImgFile.getBytes());
             String imgUrl = "/images/item/" + imgName;
