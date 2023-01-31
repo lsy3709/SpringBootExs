@@ -65,7 +65,7 @@ public class Item extends BaseEntity {
         this.itemDetail = itemFormDto.getItemDetail();
         this.itemSellStatus = itemFormDto.getItemSellStatus();
     }
-
+// 주문 동작시 , 재고 갯수 주문 갯수만큼 줄이기
     public void removeStock(int stockNumber){
         int restStock = this.stockNumber - stockNumber;
         if(restStock<0){
@@ -73,7 +73,7 @@ public class Item extends BaseEntity {
         }
         this.stockNumber = restStock;
     }
-
+// 주문 취소시, 다시 원래 재고 수량 만큼 더할 때 사용함. 
     public void addStock(int stockNumber){
         this.stockNumber += stockNumber;
     }

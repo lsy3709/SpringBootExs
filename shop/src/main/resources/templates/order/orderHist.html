@@ -14,7 +14,9 @@
     <script th:inline="javascript">
         function cancelOrder(orderId) {
             var token = $("meta[name='_csrf']").attr("content");
+            console.log(token);
             var header = $("meta[name='_csrf_header']").attr("content");
+            console.log(header);
 
             var url = "/order/" + orderId + "/cancel";
             var paramData = {
@@ -22,6 +24,7 @@
             };
 
             var param = JSON.stringify(paramData);
+            console.log(param);
 
             $.ajax({
                 url      : url,
@@ -90,6 +93,10 @@
     <h2 class="mb-4">
         구매 이력
     </h2>
+   <h4 th:text="${orders.number}"> </h4>
+   <h4 th:text="${orders.totalPages}"> </h4>
+   
+    
 
     <div th:each="order : ${orders.getContent()}">
 
@@ -120,7 +127,7 @@
         </div>
 
     </div>
-
+ <!-- 페이징 처리 하는 부분  -->
     <div th:with="start=${(orders.number/maxPage)*maxPage + 1}, end=(${(orders.totalPages == 0) ? 1 : (start + (maxPage - 1) < orders.totalPages ? start + (maxPage - 1) : orders.totalPages)})" >
         <ul class="pagination justify-content-center">
 

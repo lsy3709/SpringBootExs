@@ -3,6 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout1}">
 
+<!-- p162 참고 -->
 <head>
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
@@ -29,9 +30,13 @@
 
          /* 주문은 ajax 통신 방법 보기. */
         function order(){
+        	 //security 설정에서 disable 가능합니다. 참고로 개발시 임의로 해제하는 것임. 
             var token = $("meta[name='_csrf']").attr("content");
+        	 console.log(token);
             var header = $("meta[name='_csrf_header']").attr("content");
-
+            console.log(header);
+            
+            // 웹 -> 서버 , 요청. 컨트롤러에서 받는 매핑 주소.
             var url = "/order";
             var paramData = {
                 itemId : $("#itemId").val(),
@@ -39,6 +44,7 @@
             };
 
             var param = JSON.stringify(paramData);
+            console.log(param);
 
             $.ajax({
                 url      : url,

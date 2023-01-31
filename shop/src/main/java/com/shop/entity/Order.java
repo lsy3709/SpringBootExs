@@ -39,6 +39,8 @@ public class Order extends BaseEntity {
 
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
+        //현재 클래스 Order 엔티티 클래스 , this : order
+        // OrderItem <----> Order 양방향 설정이 되어 있다. 
         orderItem.setOrder(this);
     }
 
