@@ -83,14 +83,22 @@ public class OrderController {
         return "order/orderHist";
     }
 
+    // RestController 형식의 비동기식 데이터 처리 방식. 
+    // 웹 브라우저에서 요청(비동기방식 ajax) -> 서버에서도 응답을 데이터만 리턴 해줌.
     @PostMapping("/order/{orderId}/cancel")
     public @ResponseBody ResponseEntity cancelOrder(@PathVariable("orderId") Long orderId , Principal principal){
 
+    	// 현재 위치 1번, -> 2번 서비스로 
+    	// 두 이메일일 동일하면 -> true, 앞에 not ! , -> false 
+    	System.out.println("결과 확인 해보자orderService.validateOrder(orderId, principal.getName() : "+orderService.validateOrder(orderId, principal.getName()));
         if(!orderService.validateOrder(orderId, principal.getName())){
             return new ResponseEntity<String>("주문 취소 권한이 없습니다.", HttpStatus.FORBIDDEN);
         }
 
+        // 정상적인 취소 서비스를 구현. 현재 위치 1번, -> 2번 서비스로 
+        // 주문의 상태도 변경, 주문상품의 수량도 원래대로 복구.
         orderService.cancelOrder(orderId);
+        // 주문 취소가 다 되면, 리턴으로 주문 아이디와, 정상 코드 200을 브라우저로 응답. 
         return new ResponseEntity<Long>(orderId, HttpStatus.OK);
     }
 

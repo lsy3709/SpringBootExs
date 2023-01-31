@@ -64,10 +64,16 @@ public class Order extends BaseEntity {
         }
         return totalPrice;
     }
-
+    // OrderService에서 호출해서 왔음. 
+// 주문의 상태를 ORDER -> CANCEL 로 상태 변경
+    // 상품의 재고 수량의 원래대로 복구.
     public void cancelOrder() {
         this.orderStatus = OrderStatus.CANCEL;
+        
+        //주문안에 있는 주문상품 각각에 cancel 메소드를 호출함. 
         for (OrderItem orderItem : orderItems) {
+        	// 현재 위치 Order 엔티티클래스에서 
+        	// orderItem 
             orderItem.cancel();
         }
     }

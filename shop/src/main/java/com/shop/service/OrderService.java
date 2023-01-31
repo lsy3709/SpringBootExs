@@ -100,23 +100,33 @@ public class OrderService {
         return new PageImpl<OrderHistDto>(orderHistDtos, pageable, totalCount);
     }
 
+    // 취소 작업 부분.
     @Transactional(readOnly = true)
     public boolean validateOrder(Long orderId, String email){
+    	// 현위치 2번 -> 3번 memberRepository
+    	// 이메일로 현재 멤버 객체 반환.
         Member curMember = memberRepository.findByEmail(email);
+        
+        // orderId 취소 하려는 주문의 아이디에 해당하는 주문의 값 불러오기. 
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(EntityNotFoundException::new);
+        // 주문한 멤버를 불러오기. 
         Member savedMember = order.getMember();
 
+        // 두 이메일이 값이 같지 않다면 -> false
+        //두 이메일이 값이 같다면 -> true
         if(!StringUtils.equals(curMember.getEmail(), savedMember.getEmail())){
             return false;
         }
 
         return true;
     }
-
+// 현위치 2번. 1번에서 호출. 
     public void cancelOrder(Long orderId){
+    	// 파라미터로 넘어온 orderId(취소할 주문 아이디) 에 해당하는 디비 내용 불러오기.
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(EntityNotFoundException::new);
+        // 주문 취소 할 주문 객체로 메소드 호출.
         order.cancelOrder();
     }
 
