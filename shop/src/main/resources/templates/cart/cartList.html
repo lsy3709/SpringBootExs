@@ -109,6 +109,8 @@
                         location.href='/members/login';
                     } else{
                         alert(jqXHR.responseJSON.message);
+                        
+                        
                     }
 
                 }
@@ -161,8 +163,10 @@
                         /* alert(jqXHR.responseJSON.message); 
                         responseJSON 객체에서 message 를 못읽는 부분
                         오류 잠시 보류.
+                        아래에 코드로 수정해서 확인 해보기.
                         */
-                        alert('임시 오류 호출 테스트');
+                        alert(jqXHR.responseText);
+                        /* alert('임시 오류 호출 테스트'); */
                     }
 
                 }
