@@ -129,7 +129,8 @@ public class ItemController {
     	
     	// 상세페이지에 필요한 정보를 담는 객체로 리턴. 
         ItemFormDto itemFormDto = itemService.getItemDtl(itemId);
-        
+        // 뷰에 item 키로, 값은 : itemFormDto
+        // 상품 등록시 필요한 정보들이 다 있음. 
         model.addAttribute("item", itemFormDto);
         return "item/itemDtl";
     }
