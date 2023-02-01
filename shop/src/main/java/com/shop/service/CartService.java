@@ -119,11 +119,14 @@ public class CartService {
         List<OrderDto> orderDtoList = new ArrayList<>();
 
         for (CartOrderDto cartOrderDto : cartOrderDtoList) {
-        	// 장바구니 아이템이 있는지 여부 조회. 
+        	// 장바구니 아이템이 있는지 여부 조회.
+        	// 2 -> 3
             CartItem cartItem = cartItemRepository
                             .findById(cartOrderDto.getCartItemId())
                             .orElseThrow(EntityNotFoundException::new);
 
+            // 장바구니에 담긴 상품을 다시 디비에서 조회 후
+            // 이것을 주문을 하기위한 OrderDto 타입으로 다시 재할당.
             OrderDto orderDto = new OrderDto();
             orderDto.setItemId(cartItem.getItem().getId());
             orderDto.setCount(cartItem.getCount());
@@ -131,8 +134,11 @@ public class CartService {
             orderDtoList.add(orderDto);
         }
 // 내일 이어서 설명 다시 하기. 
+        // 주문 전용 DTO 다 담은 후 , 주문 로직 처리.
+      
         Long orderId = orderService.orders(orderDtoList, email);
         for (CartOrderDto cartOrderDto : cartOrderDtoList) {
+        	  // 2 -> 3
             CartItem cartItem = cartItemRepository
                             .findById(cartOrderDto.getCartItemId())
                             .orElseThrow(EntityNotFoundException::new);

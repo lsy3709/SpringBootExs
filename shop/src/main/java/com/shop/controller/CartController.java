@@ -95,10 +95,15 @@ public class CartController {
     }
 
     // 3 장바구니에 담긴 상품 주문하기.
+    //@ResponseBody : @RestController 방식이 같다. 
+    // 응답을 자바 객체 -> JSON 형태로 변환해서 브라우저에게 전달함. 
+    // ResponseEntity 응답시 , 지정한 타입 정수, 문자열로 반환도 하면서
+    // 서버의 상태 코드도 같이 전달하는 용도.
     @PostMapping(value = "/cart/orders")
     public @ResponseBody ResponseEntity orderCartItem(@RequestBody CartOrderDto cartOrderDto, Principal principal){
     	// 브라우저에서 장바구니에 담긴 상품들을 배열에 담아서 전달.
-    	// 서버에서는 리스트로 받고 있음.
+    	// 서버에서는  CartOrderDto에 객체로 매핑 : 예) cartOrderDtoList 로 매핑.
+    	// 매핑이 된 멤버를 게터로 가지고 왔다. 예) getCartOrderDtoList()
         List<CartOrderDto> cartOrderDtoList = cartOrderDto.getCartOrderDtoList();
 
         if(cartOrderDtoList == null || cartOrderDtoList.size() == 0){
@@ -111,8 +116,9 @@ public class CartController {
             }
         }
 
-        // 1 -> 2 
+        // 1 -> 2 , 주문 처리가 완료된 주문 아이디. 
         Long orderId = cartService.orderCartItem(cartOrderDtoList, principal.getName());
+        // 웹 브라우저에게 , 주문 아이디와, 상태코드 200
         return new ResponseEntity<Long>(orderId, HttpStatus.OK);
     }
 

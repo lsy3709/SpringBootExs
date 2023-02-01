@@ -132,9 +132,13 @@ public class OrderService {
 
     public Long orders(List<OrderDto> orderDtoList, String email){
 
+    	// 구매자 확인. 
         Member member = memberRepository.findByEmail(email);
+        //orderDtoList 리스트 -> orderItemList 재할당.
         List<OrderItem> orderItemList = new ArrayList<>();
 
+        // orderDtoList 에서 하나씩 꺼내 OrderDto를 이용해서 해당 상품을 조회.
+        // 상품을 다시 orderItemList에 추가하는 작업. 반복.
         for (OrderDto orderDto : orderDtoList) {
             Item item = itemRepository.findById(orderDto.getItemId())
                     .orElseThrow(EntityNotFoundException::new);
@@ -142,8 +146,10 @@ public class OrderService {
             OrderItem orderItem = OrderItem.createOrderItem(item, orderDto.getCount());
             orderItemList.add(orderItem);
         }
-
+        // 주문_상품 리스트가 만들어지고 -> 주문으로 전달. 
+        // 주문 처리 로직.
         Order order = Order.createOrder(member, orderItemList);
+        // 주문 기록을 디비에 반영.
         orderRepository.save(order);
 
         return order.getId();
