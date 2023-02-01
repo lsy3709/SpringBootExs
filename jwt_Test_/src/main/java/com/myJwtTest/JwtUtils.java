@@ -34,7 +34,11 @@ public class JwtUtils {
 
     // 토큰 검증
     // 공식 문서 기본 샘플 코드 
+    // 브라우저에서 발급 받은 jwt 토큰을 헤더에 추가해서, 서버에 왔어요.
+    // 확인 절차.
+    //String token : 브라우저에 넘어온 토큰. 
     public static boolean verifyToken(String token) {
+    	//매개변수에 있는 시크릿 값은 토큰 생성할 때 값과 일치해야하는 값.
         Algorithm algorithm = Algorithm.HMAC256("secret");
         try {
             DecodedJWT verify = JWT.require(algorithm)

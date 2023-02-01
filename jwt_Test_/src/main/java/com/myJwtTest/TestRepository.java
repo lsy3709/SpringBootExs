@@ -17,7 +17,11 @@ public class TestRepository {
     }
 
     // 유저 확인
+    // 포스트 맨에서 입력한 유저, 패스워드 가 LoginReq 에 담겨짐. 
+    // members 리스트는 하나의 멤버를 가지고 있습니다. kim/1234
     public boolean login(LoginReq req) {
+    	// m : mebers에서 하나의 멤버를 꺼내어서 : 입력된 계정: kim/1234
+    	// req :포스트 맨에서 입력한 유저, 패스워드 가 LoginReq 에 담겨짐. 
          return members.stream()
                 .anyMatch(m -> m.getUsername().equals(req.getUsername()) && m.getPassword().equals(req.getPassword()));
     }
